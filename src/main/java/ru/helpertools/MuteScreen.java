@@ -5,7 +5,6 @@ import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.components.Button;
 import net.minecraft.client.gui.screens.Screen;
 import net.minecraft.network.chat.Component;
-import org.lwjgl.glfw.GLFW;
 
 import java.util.List;
 
@@ -83,18 +82,12 @@ public final class MuteScreen extends Screen {
         g.drawCenteredString(font, DURATIONS.get(durationIndex), width / 2, top + 100, 0xFFFFFFFF);
         g.drawString(font, "Причина", left + 18, top + 137, 0xFF9FB5FF, false);
         String reason = REASONS.get(reasonIndex);
-        String shown = font.width(reason) > widthPanel - 110 ? font.substrByWidth(reason, widthPanel - 120) : reason;
+        String shown = reason;
+        while (!shown.isEmpty() && font.width(shown) > widthPanel - 120) {
+            shown = shown.substring(0, shown.length() - 1);
+        }
         g.drawCenteredString(font, shown, width / 2, top + 166, 0xFFFFFFFF);
         super.render(g, mouseX, mouseY, delta);
-    }
-
-    @Override
-    public boolean keyPressed(int keyCode, int scanCode, int modifiers) {
-        if (keyCode == GLFW.GLFW_KEY_ESCAPE) {
-            Minecraft.getInstance().setScreen(new PlayerListScreen());
-            return true;
-        }
-        return super.keyPressed(keyCode, scanCode, modifiers);
     }
 
     @Override
